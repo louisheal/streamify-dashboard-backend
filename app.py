@@ -11,7 +11,7 @@ riot_header = {'X_Riot_Token':os.getenv('riot_token')}
 def home():
     args = request.args
 
-    if 'region' not in args or invalid_region(str(args.get['region'])):
+    if 'region' not in args or invalid_region(str(args.get('region'))):
         return "Argument \"region\" is either missing or incorrect.", 400
     
     if 'username' not in args or invalid_username(str(args.get('username'))):
