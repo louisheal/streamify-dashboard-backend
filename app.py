@@ -11,7 +11,7 @@ riot_header = {'X_Riot_Token':os.getenv('riot_token')}
 def home():
     args = request.args
 
-    if 'region' not in args or invalid_region(str(args.get('region'))):
+    if 'region' not in args or invalid_region(str(args.get('region')).lower()):
         return "Argument \"region\" is either missing or incorrect.", 400
     
     if 'username' not in args or invalid_username(str(args.get('username'))):
@@ -20,7 +20,7 @@ def home():
     if 'tagline' not in args or invalid_tagline(str(args.get('tagline'))):
         return "Argument \"tagline\" is either missing or incorrect.", 400
 
-    region, username, tagline = str(args.get['region']).toLower(), str(args.get['username']), str(args.get['tagline'])
+    region, username, tagline = str(args.get['region']).lower(), str(args.get['username']), str(args.get['tagline'])
 
     puuid = requests.get(f"https://{region}.{url}/riot/account/v1/accounts/by-riot-id/{username}/{tagline}", headers=riot_header)
 
@@ -35,7 +35,7 @@ def home():
     return response.json(), 200
 
 def invalid_region(region):
-    return region.toLower() not in ['americas','asia','esports','europe']
+    return region not in ['americas','asia','esports','europe']
 
 def invalid_username(username):
     return not username.isalnum()
