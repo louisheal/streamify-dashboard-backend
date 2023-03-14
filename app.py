@@ -20,7 +20,7 @@ def home():
     if 'tagline' not in args or not valid_tagline(str(args.get('tagline'))):
         return "Argument \"tagline\" is either missing or incorrect.", 400
 
-    region, username, tagline = str(args.get['region']).lower(), str(args.get['username']), str(args.get['tagline'])
+    region, username, tagline = str(args.get('region')).lower(), str(args.get('username')), str(args.get('tagline'))
 
     puuid = requests.get(f"https://{region}.{url}/riot/account/v1/accounts/by-riot-id/{username}/{tagline}", headers=riot_header)
 
