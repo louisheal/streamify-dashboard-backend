@@ -11,13 +11,13 @@ riot_header = {'X_Riot_Token':os.getenv('riot_token')}
 def home():
     args = request.args
 
-    if 'region' not in args or invalid_region(str(args.get('region')).lower()):
+    if 'region' not in args or valid_region(str(args.get('region')).lower()):
         return "Argument \"region\" is either missing or incorrect.", 400
     
-    if 'username' not in args or invalid_username(str(args.get('username'))):
+    if 'username' not in args or valid_username(str(args.get('username'))):
         return "Argument \"username\" is either missing or incorrect.", 400
     
-    if 'tagline' not in args or invalid_tagline(str(args.get('tagline'))):
+    if 'tagline' not in args or not valid_tagline(str(args.get('tagline'))):
         return "Argument \"tagline\" is either missing or incorrect.", 400
 
     region, username, tagline = str(args.get['region']).lower(), str(args.get['username']), str(args.get['tagline'])
@@ -34,11 +34,11 @@ def home():
     print(response.json())
     return response.json(), 200
 
-def invalid_region(region):
-    return region not in ['americas','asia','esports','europe']
+def valid_region(region):
+    return region in ['americas','asia','esports','europe']
 
-def invalid_username(username):
-    return not username.isalnum()
+def valid_username(username):
+    return username.isalnum()
 
-def invalid_tagline(tagline):
-    return len(tagline) != 4 or tagline.isdigit()
+def valid_tagline(tagline):
+    return len(tagline) == 4 and tagline.isdigit()
