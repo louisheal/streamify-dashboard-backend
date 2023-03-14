@@ -1,2 +1,2 @@
-# streamify-api
+# Streamify API
 API for StreamifyStore.com
