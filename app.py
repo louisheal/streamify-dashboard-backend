@@ -41,4 +41,4 @@ def invalid_username(username):
     return not username.isalnum()
 
 def invalid_tagline(tagline):
-    return len(tagline) != 4 or tagline.isalnum()
+    return len(tagline) != 4 or tagline.isdigit()
