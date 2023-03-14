@@ -11,10 +11,10 @@ riot_header = {'X_Riot_Token':os.getenv('riot_token')}
 def home():
     args = request.args
 
-    if 'region' not in args or valid_region(str(args.get('region')).lower()):
+    if 'region' not in args or not valid_region(str(args.get('region')).lower()):
         return "Argument \"region\" is either missing or incorrect.", 400
     
-    if 'username' not in args or valid_username(str(args.get('username'))):
+    if 'username' not in args or not valid_username(str(args.get('username'))):
         return "Argument \"username\" is either missing or incorrect.", 400
     
     if 'tagline' not in args or not valid_tagline(str(args.get('tagline'))):
