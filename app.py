@@ -1,44 +1,28 @@
-from flask import Flask, jsonify, request
-import requests
 import os
+
+from flask import Flask, jsonify, request
+from flask_dance.contrib.twitch import make_twitch_blueprint, twitch
 
 app = Flask(__name__)
 
-url = "api.riotgames.com"
-riot_header = {'X_Riot_Token':os.getenv('riot_token')}
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
-@app.route('/valorant/v1/')
-def home():
-    args = request.args
+twitch_blueprint = make_twitch_blueprint(
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET
+)
 
-    if 'region' not in args or not valid_region(str(args.get('region')).lower()):
-        return "Argument \"region\" is either missing or incorrect.", 400
-    
-    if 'username' not in args or not valid_username(str(args.get('username'))):
-        return "Argument \"username\" is either missing or incorrect.", 400
-    
-    if 'tagline' not in args or not valid_tagline(str(args.get('tagline'))):
-        return "Argument \"tagline\" is either missing or incorrect.", 400
+app.register_blueprint(twitch_blueprint)
 
-    region, username, tagline = str(args.get('region')).lower(), str(args.get('username')), str(args.get('tagline'))
+@app.route("/")
+def index():
+    pass
 
-    puuid = requests.get(f"https://{region}.{url}/riot/account/v1/accounts/by-riot-id/{username}/{tagline}", headers=riot_header)
+@app.route("/twitchlogin")
+def twitch_login():
+    pass
 
-    try:
-        puuid = puuid.json()['puuid']
-    except Exception:
-        return "Invalid arguments entered.", 401
-    
-    response = requests.get(f"https://{region}.{url}/val/match/v1/matchlists/by-puuid/{puuid}", headers=riot_header)
-    print(response.text)
-    print(response.json())
-    return response.json(), 200
-
-def valid_region(region):
-    return region in ['americas','asia','esports','europe']
-
-def valid_username(username):
-    return username.isalnum()
-
-def valid_tagline(tagline):
-    return len(tagline) == 4 and tagline.isdigit()
+@app.route("/userinfo")
+def user_info():
+    pass
