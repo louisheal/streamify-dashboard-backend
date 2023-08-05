@@ -1,28 +1,33 @@
 import os
 
 from flask import Flask, jsonify, request
-from flask_dance.contrib.twitch import make_twitch_blueprint, twitch
+import requests
 
 app = Flask(__name__)
 
 CLIENT_ID = os.environ.get('CLIENT_ID')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
-twitch_blueprint = make_twitch_blueprint(
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET
-)
+def get_twitch_username(access_token):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Client-ID': CLIENT_ID
+    }
+    response = requests.get('https://api.twitch.tv/helix/users', headers=headers)
 
-app.register_blueprint(twitch_blueprint)
+    if response.status_code != 200:
+        return None
 
-@app.route("/")
-def index():
-    pass
+    return response.json().get('data', [{}])[0].get('login')
 
-@app.route("/twitchlogin")
-def twitch_login():
-    pass
-
-@app.route("/userinfo")
+@app.route('/info', methods=['GET'])
 def user_info():
-    pass
+    access_token = request.args.get('access_token')
+
+    if not access_token:
+        return jsonify({"msg": "Missing access_token parameter"}), 400
+
+    twitch_username = get_twitch_username(access_token)
+    if twitch_username is None:
+        return jsonify({"msg": "Invalid Twitch access token"}), 401
+
+    return jsonify(username=twitch_username), 200
