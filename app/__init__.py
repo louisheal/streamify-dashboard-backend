@@ -18,7 +18,7 @@ if ENV == "production":
     app.config['SESSION_PERMANENT'] = False
     app.config['SESSION_USE_SIGNER'] = True
     app.config['SESSION_KEY_PREFIX'] = 'session:'
-    app.config['SESSION_REDIS'] = redis.from_url('redis://red-cjbub0fdb61s73bpajdg:6379')
+    app.config['SESSION_REDIS'] = redis.from_url('redis://red-cjc10dbbq8nc738b96a0:6379')
 else:
     app.config['SESSION_TYPE'] = 'filesystem'
 
