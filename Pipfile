@@ -10,6 +10,7 @@ gunicorn = "*"
 flask-pymongo = "*"
 pymongo = "*"
 flask-cors = "*"
+flask-session = "*"
 
 [dev-packages]
 

@@ -14,7 +14,7 @@ app.config.from_object(FlaskConfig)
 app.config.from_object(MongoConfig)
 
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
-CORS(app, origins=[FRONTEND_URL])
+CORS(app, supports_credentials=True, origins=[FRONTEND_URL])
 
 mongo = PyMongo(app)
 
