@@ -1,6 +1,6 @@
 class User:
-    def __init__(self, streamer_name, discount_code, discount_amount, orders, withdrawals):
-        self.streamer_name   = streamer_name
+    def __init__(self, username, discount_code, discount_amount, orders, withdrawals):
+        self.username        = username
         self.discount_code   = discount_code
         self.discount_amount = discount_amount
         self.orders          = orders

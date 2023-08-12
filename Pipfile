@@ -9,6 +9,7 @@ requests = "*"
 gunicorn = "*"
 flask-pymongo = "*"
 pymongo = "*"
+flask-cors = "*"
 
 [dev-packages]
 
