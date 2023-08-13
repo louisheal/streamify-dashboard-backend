@@ -8,10 +8,10 @@ flask = "*"
 requests = "*"
 gunicorn = "*"
 flask-pymongo = "*"
-pymongo = "*"
 flask-cors = "*"
 flask-session = "*"
 redis = "*"
+pymongo = "==3.12.3"
 
 [dev-packages]
 

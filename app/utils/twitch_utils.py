@@ -16,8 +16,6 @@ def get_username(code):
         'redirect_uri': REDIRECT_URI,
     }).json()
 
-    print(f"Client Id = {CLIENT_ID}")
-
     access_token = token_response.get('access_token')
     if not access_token:
         return None
