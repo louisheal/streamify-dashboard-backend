@@ -12,6 +12,7 @@ flask-cors = "*"
 flask-session = "*"
 redis = "*"
 pymongo = "==3.12.3"
+dnspython = "*"
 
 [dev-packages]
 
