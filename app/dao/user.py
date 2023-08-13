@@ -6,6 +6,7 @@ class User:
         self.orders          = orders
         self.withdrawals     = withdrawals
         self.balance         = self.__calculate_balance(orders)
+        self.sales           = len(orders)
     
     def __calculate_balance(self, orders):
         prices = [order['price_gbp'] for order in orders]
