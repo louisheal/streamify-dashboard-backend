@@ -7,7 +7,8 @@ from flask import jsonify, session, redirect, request
 
 from . import app
 from .dao import user_dao
-from .utils import twitch_utils as twitch
+from .dao import twitch_dao as twitch
+from .utils import shopify_utils as shopify
 
 FRONTEND_URL = os.environ.get('FRONTEND_URL')
 
@@ -30,35 +31,52 @@ def callback():
         logging.critical("Endpoint /callback accessed without code")
         return jsonify(msg="Missing code parameter"), 400
 
-    username = twitch.get_username(code)
-    if username is None:
+    twitch_user = twitch.get_user(code)
+    if twitch_user is None:
         logging.critical("Endpoint /callback accessed with invalid code")
         return jsonify(msg="Invalid Twitch access token"), 401
 
-    session['username'] = username
-    logging.info(f"User {username} has successfully logged in")
+    session['username'] = twitch_user.username
+    session['display_name'] = twitch_user.display_name
+    session['avatar_url'] = twitch_user.avatar_url
+
+    logging.info(f"User {twitch_user.username} has successfully logged in")
     return redirect(FRONTEND_URL)
 
 @app.route('/session')
 def get_session():
-    print(session.get('username'))
     username = session.get('username')
-    if username is None:
-        logging.info("No username set")
-        return jsonify(status='No username provided')
+    display_name = session.get('display_name')
+    avatar_url = session.get('avatar_url')
 
-    logging.info(f"Retrieving info for {username} from database")
-    user = user_dao.get_user(username)
+    if username is None:
+        return jsonify(status='not_logged_in')
+
+    user = user_dao.get_user(username, display_name, avatar_url)
     if user is None:
         logging.info(f"User {username} is not in the database")
-        return jsonify(msg="User is not a streamify affiliate")
+        return jsonify(msg="You are not a Streamify affiliate - Contact @StreamifyStore on Twitter to learn more")
 
     logging.info(f"Found user {user.username}")
-    return json.dumps(user.__dict__)
+    return user.toJson()
 
 @app.route('/logout')
 def logout():
-    username = session.get('username')
-    session.pop('username', None)
+    username = session.pop('username', None)
+    session.pop('display_name')
+    session.pop('avatar_url')
+
     logging.info(f"{username} has been logged out")
     return jsonify(status=f'{username}_logged_out')
+
+@app.route('/shopifyOrder', methods=['POST'])
+def shopify_order():
+    data = request.get_data()
+    verified = shopify.verify_webhook(data, request.headers.get('X-Shopify-Hmac-SHA256'))
+
+    if not verified:
+        return "Invalid request", 401
+    
+    # Add order to MongoDB database
+
+    return jsonify(msg="Order added successfully")

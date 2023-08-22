@@ -24,7 +24,8 @@ app.config["SESSION_TYPE"] = 'mongodb'
 app.config["SESSION_MONGODB"] = mongo.cx
 app.config["SESSION_MONGODB_DB"] = 'dashboard'
 app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'
-app.config['SESSION_COOKIE_DOMAIN'] = '.streamifystore.com'
+# TODO: Parameterise variable
+app.config['SESSION_COOKIE_DOMAIN'] = 'localhost'
 
 Session(app)
 

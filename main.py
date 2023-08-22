@@ -7,6 +7,7 @@ if LOGGING_LEVEL not in ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSE
     raise ValueError(f'Invalid log level: {LOGGING_LEVEL}')
 
 logging.basicConfig(level=LOGGING_LEVEL)
+logging.info(f"Streamify server started with {LOGGING_LEVEL} logging level")
 
 from app import app
 

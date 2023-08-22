@@ -2,12 +2,14 @@ import os
 
 import requests
 
+from .twitch_user import TwitchUser
+
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = os.environ.get('REDIRECT_URI')
 SCOPE = "user:read:email"
 
-def get_username(code):
+def get_user(code):
     token_response = requests.post('https://id.twitch.tv/oauth2/token', params={
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
@@ -25,7 +27,8 @@ def get_username(code):
         'Authorization': f'Bearer {access_token}'
     }).json()
 
-    return user_response['data'][0]['login']
+    user_data = user_response['data'][0]
+    return TwitchUser(user_data['login'], user_data['display_name'], user_data['profile_image_url'])
 
 def get_auth_url(state):
     return f"https://id.twitch.tv/oauth2/authorize?client_id={CLIENT_ID}&force_verify=true&redirect_uri={REDIRECT_URI}&response_type=code&scope={SCOPE}&state={state}"
