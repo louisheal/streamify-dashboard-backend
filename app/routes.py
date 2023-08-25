@@ -82,3 +82,12 @@ def shopify_order():
     # Add order to MongoDB database
 
     return jsonify(msg="Order added successfully")
+
+@app.route('/sessiondebug')
+def session_debug():
+    username = session.pop('username', None)
+    displayName = session.pop('display_name')
+    avatarUrl = session.pop('avatar_url')
+    oauthState = session.pop('oauth_state')
+
+    return jsonify(username, displayName, avatarUrl, oauthState)
