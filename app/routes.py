@@ -21,7 +21,7 @@ def twitch_auth():
 @app.route('/callback')
 def callback():
     response_state = request.args.get('state')
-    expected_state = session.pop('oauth_state', None)
+    expected_state = session.pop('oauth_state')
     logging.critical(response_state)
     logging.critical(expected_state)
     if response_state is None or response_state != expected_state:
@@ -47,9 +47,9 @@ def callback():
 
 @app.route('/session')
 def get_session():
-    username = session.get('username')
-    display_name = session.get('display_name')
-    avatar_url = session.get('avatar_url')
+    username = session.get('username', None)
+    display_name = session.get('display_name', None)
+    avatar_url = session.get('avatar_url', None)
 
     if username is None:
         return jsonify(status='not_logged_in')
@@ -65,8 +65,8 @@ def get_session():
 @app.route('/logout')
 def logout():
     username = session.pop('username', None)
-    session.pop('display_name')
-    session.pop('avatar_url')
+    session.pop('display_name', None)
+    session.pop('avatar_url', None)
 
     logging.info(f"{username} has been logged out")
     return jsonify(status=f'{username}_logged_out')
@@ -86,8 +86,8 @@ def shopify_order():
 @app.route('/sessiondebug')
 def session_debug():
     username = session.pop('username', None)
-    displayName = session.pop('display_name')
-    avatarUrl = session.pop('avatar_url')
-    oauthState = session.pop('oauth_state')
+    displayName = session.pop('display_name', None)
+    avatarUrl = session.pop('avatar_url', None)
+    oauthState = session.pop('oauth_state', None)
 
     return jsonify(username, displayName, avatarUrl, oauthState)
