@@ -16,12 +16,14 @@ FRONTEND_URL = os.environ.get('FRONTEND_URL')
 def twitch_auth():
     state = secrets.token_hex(16)
     session['oauth_state'] = state
+    logging.info("Session data: %s", session)
     return redirect(twitch.get_auth_url(state))
 
 @app.route('/callback')
 def callback():
+    logging.info("Session data: %s", session)
     response_state = request.args.get('state')
-    expected_state = session.pop('oauth_state')
+    expected_state = session.pop('oauth_state', None)
     logging.critical(response_state)
     logging.critical(expected_state)
     if response_state is None or response_state != expected_state:
