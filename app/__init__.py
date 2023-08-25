@@ -24,8 +24,7 @@ app.config["SESSION_TYPE"] = 'mongodb'
 app.config["SESSION_MONGODB"] = mongo.cx
 app.config["SESSION_MONGODB_DB"] = 'dashboard'
 app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'
-# TODO: Parameterise variable
-app.config['SESSION_COOKIE_DOMAIN'] = 'localhost'
+app.config['SESSION_COOKIE_DOMAIN'] = os.environ.get('COOKIE_DOMAIN')
 
 Session(app)
 
