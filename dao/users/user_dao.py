@@ -1,6 +1,6 @@
 import logging
 
-from app import mongo
+from api import mongo
 from .user import User
 
 def get_user(username, display_name, avatar_url):

@@ -12,12 +12,11 @@ class User:
         self.balance         = self.__calculate_balance(orders)
         self.sales           = len(orders)
     
-    # TODO: Add withdrawals to calculation
     def __calculate_balance(self, orders):
         prices = [order['price_gbp'] for order in orders]
         return sum(prices)
     
-    def toJson(self):
+    def jsonify(self):
         return jsonify(
             username=self.username,
             displayName=self.display_name,

@@ -9,7 +9,7 @@ if LOGGING_LEVEL not in ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSE
 logging.basicConfig(level=LOGGING_LEVEL)
 logging.info(f"Streamify server started with {LOGGING_LEVEL} logging level")
 
-from app import app
+from api import app
 
 if __name__ == '__main__':
     app.run()
