@@ -3,7 +3,7 @@ import os
 from config import config
 from .twitch_api import TwitchApi
 
-client_id = config.CLIENT_ID
+client_id = os.environ.get('CLIENT_ID')
 client_secret = os.environ.get('CLIENT_SECRET')
 redirect_uri = config.REDIRECT_URI
 

@@ -1,7 +1,6 @@
 import os
 
 class Config:
-    CLIENT_ID = "7ymgtul3j19tqstv5duu657yw3y854"
     DB_USER = "streamify-admin"
 
 class DevelopmentConfig(Config):

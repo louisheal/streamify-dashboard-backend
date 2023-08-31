@@ -22,9 +22,7 @@ class User:
             displayName=self.display_name,
             avatarUrl=self.avatar_url,
             discountCode=self.discount_code,
-            discountAmount=self.discount_amount,
-            orders=self.orders,
-            withdrawals=self.withdrawals,
             balance=self.balance,
-            sales=self.sales
+            sales=self.sales,
+            status="logged_in",
         )
