@@ -3,18 +3,18 @@ from flask import session, jsonify
 
 from dao.users import user_dao
 
-def get_user_data():
-    username = session.get('username', None)
-    display_name = session.get('display_name', None)
-    avatar_url = session.get('avatar_url', None)
 
-    if username is None:
+def get_user_data():
+    user_id = session.get('user_id', None)
+
+    if user_id is None:
+        logging.debug("No user associated with session")
         return jsonify(status='logged_out')
 
-    user = user_dao.get_user(username, display_name, avatar_url)
+    user = user_dao.get_user(user_id)
     if user is None:
-        logging.info(f"User {username} is not in the database")
-        return jsonify(status="login_failed")
+        logging.info(f"User {user_id} is not in the database")
+        return jsonify(status='login_failed')
 
-    logging.info(f"Found user {user.username}")
+    logging.info(f"Found user {user.display_name}")
     return user.jsonify()
