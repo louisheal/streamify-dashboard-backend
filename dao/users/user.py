@@ -14,18 +14,16 @@ class User:
         self.payouts = payouts
         self.is_affiliate = is_affiliate
 
-    @staticmethod
-    def __calculate_balance(orders: [Order]) -> float:
-        amounts = [order.amount for order in orders]
-        return sum(amounts)
+    def __calculate_balance(self) -> str:
+        amount = sum(order.amount for order in self.orders)
+        dollars, cents = divmod(amount, 100)
+        return f"${dollars}.{cents:02}"
 
-    @staticmethod
-    def __calculate_sales(orders: [Order]) -> int:
-        return len(orders)
+    def __calculate_sales(self) -> int:
+        return len(self.orders)
 
-    @staticmethod
-    def __create_order_data(orders: [Order]):
-        return order_dao.orders_to_structure(orders)
+    def __create_order_data(self):
+        return order_dao.orders_to_structure(self.orders)
 
     def jsonify(self):
         return {
@@ -33,8 +31,8 @@ class User:
             "displayName": self.display_name,
             "avatarUrl": self.avatar_url,
             "discountCode": self.discount_code,
-            "orders": self.orders,
-            "balance": self.__calculate_balance(self.orders),
-            "sales": self.__calculate_sales(self.orders),
-            "status": "logged_in",
+            "orders": self.__create_order_data(),
+            "balance": self.__calculate_balance(),
+            "sales": self.__calculate_sales(),
+            "status": 'logged_in' if self.is_affiliate else 'login_failed'
         }

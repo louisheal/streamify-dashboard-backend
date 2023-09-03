@@ -43,6 +43,6 @@ def create_user(user_id: str, display_name: str, avatar_url: str) -> None:
 def __parse_orders(order_objects: [object]) -> [Order]:
     orders = []
     for order_object in order_objects:
-        order = Order(order_object['amount'])
+        order = Order(order_object['amount'], order_object['order_date'])
         orders.append(order)
     return orders

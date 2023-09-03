@@ -42,9 +42,6 @@ def callback():
 
 
 def logout():
-    username = session.pop('username', None)
-    session.pop('display_name', None)
-    session.pop('avatar_url', None)
-
-    logging.info(f"{username} has been logged out")
-    return jsonify(status=f'{username}_logged_out')
+    user_id = session.pop('user_id', None)
+    logging.info(f"{user_id} has been logged out")
+    return jsonify(status=f'{user_id}_logged_out')
