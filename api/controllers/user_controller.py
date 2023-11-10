@@ -22,4 +22,4 @@ def get_user_data():
 def print_body():
     data = request.data.decode()
     print(data)
-    return 200
+    return "Success", 200
