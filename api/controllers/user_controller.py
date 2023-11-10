@@ -1,5 +1,5 @@
 import logging
-from flask import session, jsonify
+from flask import session, jsonify, request
 
 from dao.users import user_dao
 
@@ -18,3 +18,8 @@ def get_user_data():
 
     logging.info(f"Found user {user.username}")
     return user.jsonify()
+
+def print_body():
+    data = request.data.decode()
+    print(data)
+    return 200
